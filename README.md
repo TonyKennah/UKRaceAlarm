@@ -1,6 +1,15 @@
-# Welcome to your Expo app 👋
+# UK Race Alarm 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is an Expo project that provides alarms for UK & Irish horse races. Set alarms for all races or toggle them individually to receive a two-minute warning before the race is off.
+
+## Features
+
+- **Daily Race List**: View all of today's UK & Irish horse races in a clean, easy-to-read list.
+- **Bulk Alarm Control**: Start or stop alarms for all upcoming races with a single large, accessible button.
+- **Individual Alarms**: Tap the status indicator on any race to toggle its alarm on or off, giving you granular control.
+- **Two-Minute Warnings**: Receive a push notification two minutes before each selected race is due to start.
+- **Live Countdown**: See a real-time countdown timer for each race that has an active alarm.
+- **Auto-Updating List**: Finished races are automatically removed from the list to keep the view focused on what's next.
 
 ## Get started
 
@@ -24,16 +33,6 @@ In the output, you'll find options to open the app in a
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
 ## Learn more
 
