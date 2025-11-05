@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import races from '../../data/races.json';
+import { AppEvents } from '../../services/eventService';
 import { cancelAllRaceNotifications, scheduleRaceNotification, setupNotifications } from '../../services/notificationService';
 
 interface Race {
@@ -42,6 +43,15 @@ export default function Index() {
       const raceDateTime = new Date();
       raceDateTime.setHours(...race.time.split(':').map(Number), 0, 0);
       return raceDateTime >= currentTime;
+    });
+
+    // Find which races were removed and tell the alert to close if it's open for one of them
+    const displayedRaceIds = new Set(upcomingRaces.map(getRaceId));
+    displayedRaces.forEach(race => {
+      const raceId = getRaceId(race);
+      if (!displayedRaceIds.has(raceId)) {
+        AppEvents.emit('closeAlert', { raceId });
+      }
     });
     setDisplayedRaces(upcomingRaces);
   }, [currentTime]);

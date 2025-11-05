@@ -35,6 +35,8 @@ interface Race {
   runners: number;
 }
 
+const getRaceId = (race: Race) => `${race.time}-${race.place}`;
+
 // Store timeout IDs for web so we can cancel them.
 let webTimeoutIds: NodeJS.Timeout[] = [];
 
@@ -123,6 +125,7 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
       AppEvents.emit('showAlert', {
         title: 'TWO MINUTE WARNING',
         message: `Race Time: ${race.time} at ${race.place}\n${race.details}`,
+        raceId: getRaceId(race),
       });
     }, secondsUntilAMinuteBeforeRace * 1000);
     webTimeoutIds.push(timeoutId);

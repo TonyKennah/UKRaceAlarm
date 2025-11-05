@@ -5,6 +5,7 @@ import { AppEvents } from '../services/eventService';
 interface AlertData {
   title: string;
   message: string;
+  raceId?: string;
 }
 
 export default function CustomAlert() {
@@ -19,10 +20,22 @@ export default function CustomAlert() {
       setVisible(true);
     };
 
-    const unsubscribe = AppEvents.on('showAlert', handleShowAlert);
+    const handleCloseAlert = (data: { raceId: string }) => {
+      // Use a functional update to get the latest alertData state
+      setAlertData(currentAlertData => {
+        if (currentAlertData?.raceId === data.raceId) {
+          setVisible(false);
+          return null;
+        }
+        return currentAlertData;
+      });
+    };
 
+    const unsubscribeShow = AppEvents.on('showAlert', handleShowAlert);
+    const unsubscribeClose = AppEvents.on('closeAlert', handleCloseAlert);
     return () => {
-      unsubscribe();
+      unsubscribeShow();
+      unsubscribeClose();
     };
   }, []);
 
@@ -39,7 +52,9 @@ export default function CustomAlert() {
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalTitle}>{alertData.title}</Text>
+          <Text style={styles.modalTitle} selectable={false}>
+            {alertData.title}
+          </Text>
           <Text style={styles.modalText}>{alertData.message}</Text>
           <Pressable
             style={[styles.button, styles.buttonClose]}
