@@ -13,6 +13,7 @@ interface Race {
 export default function Index() {
   const [activeAlarms, setActiveAlarms] = useState<Set<string>>(new Set());
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [warningAlarms, setWarningAlarms] = useState<Set<string>>(new Set());
   const [displayedRaces, setDisplayedRaces] = useState<Race[]>([]);
   const notificationTimeoutIds = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
@@ -37,14 +38,13 @@ export default function Index() {
   useEffect(() => {
     // Filter races to show only upcoming ones.
     // This will run every time currentTime is updated (i.e., every second).
-    const now = new Date();
-    const upcomingRaces = (races as Race[]).filter(race => {
+    const upcomingRaces = (races as Race[]).filter((race) => {
       const raceDateTime = new Date();
       raceDateTime.setHours(...race.time.split(':').map(Number), 0, 0);
-      return raceDateTime >= now;
+      return raceDateTime >= currentTime;
     });
     setDisplayedRaces(upcomingRaces);
-  }, []);
+  }, [currentTime]);
 
   const getRaceId = (race: Race) => `${race.time}-${race.place}`;
 
@@ -55,17 +55,18 @@ export default function Index() {
     const raceDateTime = new Date();
     raceDateTime.setHours(hours, minutes, 0, 0);
 
-    // The notification itself will be for 2 mins before, but we can schedule the call to the service now.
-    // Let's assume we want to trigger the notification scheduling logic immediately if the race is soon.
-    // The notificationService handles the 2-minute logic.
-    if (raceDateTime > now) {
-      // The timeout is to trigger the notification scheduling, not the notification itself.
-      // For simplicity, let's schedule it to be checked immediately.
+    const twoMinutesBeforeRace = new Date(raceDateTime.getTime() - 2 * 60 * 1000);
+
+    if (twoMinutesBeforeRace > now) {
+      const delay = twoMinutesBeforeRace.getTime() - now.getTime();
+
       const timeoutId = setTimeout(() => {
+        // Now that it's 2 minutes before, schedule the notification (which will fire instantly)
+        // and update the UI to show "Warning".
         void scheduleRaceNotification(race, raceDateTime);
-        // The alarm has been processed, we can update the UI if needed,
-        // but for now, we'll just let the status reflect it was set.
-      }, 1); // Schedule it almost immediately
+        setWarningAlarms(prev => new Set(prev).add(raceId));
+      }, delay);
+
       notificationTimeoutIds.current.set(raceId, timeoutId);
     }
   };
@@ -144,6 +145,10 @@ export default function Index() {
 
     if (raceDateTime < now) {
       return { text: 'Race OFF', color: '#888' };
+    }
+
+    if (warningAlarms.has(raceId)) {
+      return { text: 'Warning', color: '#FFA500' }; // Orange
     }
 
     if (activeAlarms.has(raceId)) {
@@ -279,9 +284,9 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   countdownText: {
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#c70000',
+    color: '#000',
     marginHorizontal: 8,
     fontStyle: 'normal',
   },

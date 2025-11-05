@@ -1,5 +1,6 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
+import { AppEvents } from './eventService';
 
 // This configures the app to show a notification alert when it's in the foreground.
 Notifications.setNotificationHandler({
@@ -43,7 +44,7 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
   const secondsUntilAMinuteBeforeRace = secondsUntilRace - 120;
 
 
-  if (secondsUntilAMinuteBeforeRace <= 0) {
+  if (secondsUntilRace <= 0) {
     console.log(`Race ${race.time} at ${race.place} is less than 2 minutes away, not scheduling alarm.`);
     return;
   }
@@ -71,35 +72,41 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
           oscillator.stop(startTime + duration);
         };
 
-        const notes = {
-          C4: 261.63, E4: 329.63, G4: 392.00, A4: 440.00,
-          C5: 523.25, D5: 587.33, E5: 659.25,
+        const notes = { // Frequencies for the notes in the "First Call"
+          G4: 392.00,
+          C5: 523.25,
+          E5: 659.25,
+          G5: 783.99,
         };
 
+        // A more complete "First Call" melody
         const melody = [
-          { note: notes.C4, duration: 0.1, delay: 0 },
-          { note: notes.E4, duration: 0.1, delay: 0.15 },
-          { note: notes.G4, duration: 0.1, delay: 0.3 },
-          { note: notes.C5, duration: 0.2, delay: 0.45 },
-
-          { note: notes.A4, duration: 0.1, delay: 0.8 },
-          { note: notes.C5, duration: 0.1, delay: 0.95 },
-          { note: notes.D5, duration: 0.1, delay: 1.1 },
-          { note: notes.E5, duration: 0.3, delay: 1.25 },
+          // Bar 1
+          { note: notes.G4, duration: 0.15, delay: 0.0 },
+          { note: notes.C5, duration: 0.15, delay: 0.2 },
+          { note: notes.E5, duration: 0.15, delay: 0.4 },
+          { note: notes.G5, duration: 0.4, delay: 0.6 },
+          // Bar 2
+          { note: notes.G4, duration: 0.15, delay: 1.2 },
+          { note: notes.C5, duration: 0.15, delay: 1.4 },
+          { note: notes.E5, duration: 0.15, delay: 1.6 },
+          { note: notes.G5, duration: 0.4, delay: 1.8 },
+          // Bar 3
+          { note: notes.C5, duration: 0.15, delay: 2.4 },
+          { note: notes.C5, duration: 0.15, delay: 2.6 },
+          { note: notes.C5, duration: 0.3, delay: 2.8 },
+          // Bar 4
+          { note: notes.G4, duration: 0.15, delay: 3.2 },
+          { note: notes.C5, duration: 0.15, delay: 3.4 },
+          { note: notes.E5, duration: 0.15, delay: 3.6 },
+          { note: notes.G5, duration: 0.5, delay: 3.8 },
         ];
 
         const startTime = audioContext.currentTime;
         
-        // Play the melody twice
         melody.forEach(note => {
           playTone(note.note, startTime + note.delay, note.duration);
         });
-
-        const secondPartStart = startTime + 2.0; // Start the second part after a pause
-        melody.forEach(note => {
-          playTone(note.note, secondPartStart + note.delay, note.duration);
-        });
-
       } catch (e) {
         console.error("Could not play sound:", e);
       }
@@ -107,7 +114,10 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
 
     const timeoutId = setTimeout(() => {
       playAlertSound();
-      alert(`TWO MINUTE WARNING\n\nRace Time: ${race.time} at ${race.place}\n${race.details}`);
+      AppEvents.emit('showAlert', {
+        title: 'TWO MINUTE WARNING',
+        message: `Race Time: ${race.time} at ${race.place}\n${race.details}`,
+      });
     }, secondsUntilAMinuteBeforeRace * 1000);
     webTimeoutIds.push(timeoutId);
     return;
@@ -120,7 +130,7 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
       sound: 'default', // Plays the default notification sound
     },
     trigger: {
-      seconds: secondsUntilAMinuteBeforeRace,
+      seconds: Math.max(1, secondsUntilAMinuteBeforeRace), // Ensure trigger is at least 1s in the future
     },
   });
 }
