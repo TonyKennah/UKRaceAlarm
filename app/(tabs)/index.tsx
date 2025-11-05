@@ -225,12 +225,20 @@ export default function Index() {
           </View>
         </Pressable>
       </View>
-      <FlatList
-        data={displayedRaces}
-        renderItem={renderRaceItem}
-        keyExtractor={(item) => `${item.time}-${item.place}`}
-        style={styles.list}
-      />
+      {displayedRaces.length > 0 ? (
+        <FlatList
+          data={displayedRaces}
+          renderItem={renderRaceItem}
+          keyExtractor={(item) => `${item.time}-${item.place}`}
+          style={styles.list}
+        />
+      ) : (
+        <View style={styles.noRacesContainer}>
+          <Text style={styles.noRacesText}>
+            There are no races left today to set alarms for, please come back tomorrow.
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -310,5 +318,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 12,
+  },
+  noRacesContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  noRacesText: {
+    fontSize: 18,
+    color: '#000',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });
