@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function HelpScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Help screen</Text>
+      <Text style={styles.text}>There is no help...</Text>
     </View>
   );
 }
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   text: {
+    fontSize: 24,
     color: '#fff',
   },
 });

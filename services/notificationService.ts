@@ -43,8 +43,8 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
   const secondsUntilAMinuteBeforeRace = secondsUntilRace - 120;
 
 
-  if (secondsUntilRace <= 0) {
-    alert("The next race has already started or is happening now!");
+  if (secondsUntilAMinuteBeforeRace <= 0) {
+    console.log(`Race ${race.time} at ${race.place} is less than 2 minutes away, not scheduling alarm.`);
     return;
   }
 
@@ -71,9 +71,35 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
           oscillator.stop(startTime + duration);
         };
 
-        const now = audioContext.currentTime;
-        playTone(440, now, 0.15); // "Ping" at A4 for 0.15s
-        playTone(880, now + 0.2, 0.15); // "Pong" at A5, 0.2s later
+        const notes = {
+          C4: 261.63, E4: 329.63, G4: 392.00, A4: 440.00,
+          C5: 523.25, D5: 587.33, E5: 659.25,
+        };
+
+        const melody = [
+          { note: notes.C4, duration: 0.1, delay: 0 },
+          { note: notes.E4, duration: 0.1, delay: 0.15 },
+          { note: notes.G4, duration: 0.1, delay: 0.3 },
+          { note: notes.C5, duration: 0.2, delay: 0.45 },
+
+          { note: notes.A4, duration: 0.1, delay: 0.8 },
+          { note: notes.C5, duration: 0.1, delay: 0.95 },
+          { note: notes.D5, duration: 0.1, delay: 1.1 },
+          { note: notes.E5, duration: 0.3, delay: 1.25 },
+        ];
+
+        const startTime = audioContext.currentTime;
+        
+        // Play the melody twice
+        melody.forEach(note => {
+          playTone(note.note, startTime + note.delay, note.duration);
+        });
+
+        const secondPartStart = startTime + 2.0; // Start the second part after a pause
+        melody.forEach(note => {
+          playTone(note.note, secondPartStart + note.delay, note.duration);
+        });
+
       } catch (e) {
         console.error("Could not play sound:", e);
       }
@@ -94,7 +120,7 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
       sound: 'default', // Plays the default notification sound
     },
     trigger: {
-      seconds: secondsUntilRace,
+      seconds: secondsUntilAMinuteBeforeRace,
     },
   });
 }

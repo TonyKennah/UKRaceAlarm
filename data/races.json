@@ -1,42 +1,362 @@
 [
   {
-    "time": "23:48",
-    "place": "Wolverhampton",
+    "time": "12:10",
+    "place": "Sedgefield",
     "country": "UK",
-    "going": "Standard",
-    "details": "Spreadex Sports First Goalscorer Insurance Handicap (3yo, Class 5, 1m 1f, 10 runners)",
-    "runners": 10
+    "going": "Gd/Sft",
+    "details": "Fairlight Studios At Sedgefield Racecourse Conditional Jockeys\u0027 Handicap Hurdle (3yo+, Class 5, 2m 178y, 7 runners) FORM 100%",
+    "runners": 7
   },
   {
-    "time": "23:51",
-    "place": "Wolverhampton",
+    "time": "12:20",
+    "place": "Ludlow",
     "country": "UK",
-    "going": "Standard",
-    "details": "Spreadex Sports First Goalscorer Insurance Handicap (3yo, Class 5, 1m 1f, 9 runners)",
-    "runners": 9
+    "going": "Gd",
+    "details": "Bright Maize \u0027Introductory\u0027 Hurdle (GBB Race) (4yo+, Class 3, 2m 5f 55y, 3 runners) FORM 38%",
+    "runners": 3
   },
   {
-    "time": "23:55",
-    "place": "Chelmsford",
+    "time": "12:30",
+    "place": "Newbury",
     "country": "UK",
-    "going": "Standard",
-    "details": "Tote.co.uk Free Streaming Every UK Race Handicap (4yo+, Class 6, 1m 2f, 14 runners)",
-    "runners": 14
+    "going": "Chase: good, good to firm in places; hurdle: good to soft",
+    "details": "Cheltenham Festival Specials Live At BetVictor \u0027Chasing Excellence\u0027 Beginners\u0027 Chase (GBB Race) (4yo+, Class 3, 2m 2f 64y, 2 runners) FORM 100%",
+    "runners": 2
   },
   {
-    "time": "23:59",
-    "place": "Dundalk",
+    "time": "12:37",
+    "place": "Clonmel",
     "country": "IRE",
-    "going": "Standard",
-    "details": "Follow Us On Social Media @DundalkStadium Handicap (3yo, 1m, 13 runners)",
+    "going": "Sft",
+    "details": "Irish Stallion Farms EBF Maiden Hurdle (5yo+, Class , 2m 3f 134y, 12 runners) FORM 37%",
+    "runners": 12
+  },
+  {
+    "time": "12:45",
+    "place": "Sedgefield",
+    "country": "UK",
+    "going": "Gd/Sft",
+    "details": "Canine Premier Flex Plus Joint Supplement Maiden Hurdle (GBB Race) (4yo+, Class 4, 2m 178y, 6 runners) FORM 63%",
+    "runners": 6
+  },
+  {
+    "time": "12:55",
+    "place": "Ludlow",
+    "country": "UK",
+    "going": "Gd",
+    "details": "Racing To School Amateur Jockeys\u0027 Handicap Hurdle (3yo+, Class 4, 2m 5f 55y, 6 runners) FORM 100%",
+    "runners": 6
+  },
+  {
+    "time": "13:05",
+    "place": "Newbury",
+    "country": "UK",
+    "going": "Chase: good, good to firm in places; hurdle: good to soft",
+    "details": "OLBG Conditional Jockeys\u0027 Handicap Hurdle (3yo+, Class 3, 2m 69y, 13 runners) FORM 97%",
     "runners": 13
   },
   {
-    "time": "00:04",
+    "time": "13:12",
+    "place": "Clonmel",
+    "country": "IRE",
+    "going": "Sft",
+    "details": "Connolly\u0027s RED MILLS Irish EBF Auction Maiden Hurdle (4yo+, Class , 2m 157y, 9 runners) FORM 29%",
+    "runners": 9
+  },
+  {
+    "time": "13:20",
+    "place": "Sedgefield",
+    "country": "UK",
+    "going": "Gd/Sft",
+    "details": "Michael Watson Civils \u0026 Groundworks Handicap Chase (4yo+, Class 5, 2m 5f 28y, 11 runners) FORM 95%",
+    "runners": 11
+  },
+  {
+    "time": "13:30",
+    "place": "Ludlow",
+    "country": "UK",
+    "going": "Gd",
+    "details": "Ace ATV Juvenile Hurdle (GBB Race) (3yo, Class 4, 1m 7f 169y, 4 runners) FORM 41%",
+    "runners": 4
+  },
+  {
+    "time": "13:40",
+    "place": "Newbury",
+    "country": "UK",
+    "going": "Chase: good, good to firm in places; hurdle: good to soft",
+    "details": "Agetur UK 40th Anniversary In Business Maiden Hurdle (GBB Race) (4yo+, Class 3, 2m 69y, 12 runners) FORM 38%",
+    "runners": 12
+  },
+  {
+    "time": "13:47",
+    "place": "Clonmel",
+    "country": "IRE",
+    "going": "Sft",
+    "details": "Clonmel Oil Service Station Handicap Hurdle (4yo+, Class , 3m, 9 runners) FORM 100%",
+    "runners": 9
+  },
+  {
+    "time": "13:55",
+    "place": "Sedgefield",
+    "country": "UK",
+    "going": "Gd/Sft",
+    "details": "Fairlight Studio Returns From Canada Novices\u0027 Hurdle (GBB Race) (4yo+, Class 4, 2m 3f 188y, 6 runners) FORM 58%",
+    "runners": 6
+  },
+  {
+    "time": "14:05",
+    "place": "Ludlow",
+    "country": "UK",
+    "going": "Gd",
+    "details": "Richard Strachan Memorial Handicap Chase (GBB Race) (4yo+, Class 4, 3m 1f 125y, 4 runners) FORM 100%",
+    "runners": 4
+  },
+  {
+    "time": "14:10",
     "place": "Newcastle",
     "country": "UK",
-    "going": "Standard",
-    "details": "Huge Daily Boosts Only At BetUK Handicap (4yo+, Class 5, 6f, 12 runners)",
+    "going": "std",
+    "details": "Win 250,000 With BetMGM\u0027s Golden Goals Nursery (GBBPlus Race) (2yo, Class 4, 1m 5y, 4 runners) FORM 79%",
+    "runners": 4
+  },
+  {
+    "time": "14:15",
+    "place": "Newbury",
+    "country": "UK",
+    "going": "Chase: good, good to firm in places; hurdle: good to soft",
+    "details": "CSP Mares\u0027 Novices\u0027 Hurdle (GBB Race) (4yo+, Class 2, 2m 69y, 14 runners) FORM 39%",
+    "runners": 14
+  },
+  {
+    "time": "14:22",
+    "place": "Clonmel",
+    "country": "IRE",
+    "going": "Sft",
+    "details": "T.A. Morris Memorial Irish EBF Mares Chase (Listed) (4yo+, Class 1, 2m 4f 171y, 6 runners) FORM 100%",
+    "runners": 6
+  },
+  {
+    "time": "14:30",
+    "place": "Sedgefield",
+    "country": "UK",
+    "going": "Gd/Sft",
+    "details": "Michael \u0026 Olivia Watson Novices\u0027 Handicap Chase (GBB Race) (4yo+, Class 4, 2m 3f 65y, 9 runners) FORM 100%",
+    "runners": 9
+  },
+  {
+    "time": "14:37",
+    "place": "Ludlow",
+    "country": "UK",
+    "going": "Gd",
+    "details": "Ace ATV Mares\u0027 \u0027National Hunt\u0027 Maiden Hurdle (GBB Race) (4-6yo, Class 4, 2m 5f 55y, 6 runners) FORM 50%",
+    "runners": 6
+  },
+  {
+    "time": "14:45",
+    "place": "Newcastle",
+    "country": "UK",
+    "going": "std",
+    "details": "Best Odds Guaranteed At BetMGM Nursery (2yo, Class 6, 7f 14y, 11 runners) FORM 65%",
+    "runners": 11
+  },
+  {
+    "time": "14:50",
+    "place": "Newbury",
+    "country": "UK",
+    "going": "Chase: good, good to firm in places; hurdle: good to soft",
+    "details": "Pertemps Network Handicap Hurdle (GBB Race) (4yo+, Class 2, 3m 57y, 11 runners) FORM 100%",
+    "runners": 11
+  },
+  {
+    "time": "14:57",
+    "place": "Clonmel",
+    "country": "IRE",
+    "going": "Sft",
+    "details": "Clonmel Oil Chase (Grade 2) (4yo+, Class 1, 2m 4f 171y, 4 runners) FORM 100%",
+    "runners": 4
+  },
+  {
+    "time": "15:05",
+    "place": "Sedgefield",
+    "country": "UK",
+    "going": "Gd/Sft",
+    "details": "Paxtons No1 For CaseIH Mares\u0027 Handicap Hurdle (Div 1) (4yo+, Class 5, 2m 5f 34y, 10 runners) FORM 98%",
+    "runners": 10
+  },
+  {
+    "time": "15:12",
+    "place": "Ludlow",
+    "country": "UK",
+    "going": "Gd",
+    "details": "Rix Oakleys Novices\u0027 Handicap Chase (4yo+, Class 5, 1m 7f 212y, 7 runners) FORM 100%",
+    "runners": 7
+  },
+  {
+    "time": "15:20",
+    "place": "Newcastle",
+    "country": "UK",
+    "going": "std",
+    "details": "Midnite A Next Generation Betting App Handicap (3yo+, Class 5, 1m 2f 42y, 12 runners) FORM 95%",
     "runners": 12
+  },
+  {
+    "time": "15:25",
+    "place": "Newbury",
+    "country": "UK",
+    "going": "Chase: good, good to firm in places; hurdle: good to soft",
+    "details": "Daily Racing Boosts At BetVictor Handicap Chase (GBB Race) (4yo+, Class 3, 2m 3f 187y, 4 runners) FORM 100%",
+    "runners": 4
+  },
+  {
+    "time": "15:32",
+    "place": "Clonmel",
+    "country": "IRE",
+    "going": "Sft",
+    "details": "Prior Park Service Station Clonmel Handicap Chase (0-100) (4yo+, Class , 2m 1f 50y, 19 runners) FORM 99%",
+    "runners": 19
+  },
+  {
+    "time": "15:40",
+    "place": "Sedgefield",
+    "country": "UK",
+    "going": "Gd/Sft",
+    "details": "Paxtons No1 For CaseIH Mares\u0027 Handicap Hurdle (Div 2) (4yo+, Class 5, 2m 5f 34y, 10 runners) FORM 98%",
+    "runners": 10
+  },
+  {
+    "time": "15:47",
+    "place": "Ludlow",
+    "country": "UK",
+    "going": "Gd",
+    "details": "Ace ATV \u0027Junior\u0027 Open NH Flat Race (GBB Race) (3yo, Class 5, 1m 7f 169y, 8 runners) FORM 6%",
+    "runners": 8
+  },
+  {
+    "time": "15:55",
+    "place": "Newcastle",
+    "country": "UK",
+    "going": "std",
+    "details": "Bet 10 Get 40 With BetMGM EBF Maiden Fillies\u0027 Stakes (GBB Race) (2yo, Class 5, 7f 14y, 6 runners) FORM 11%",
+    "runners": 6
+  },
+  {
+    "time": "16:00",
+    "place": "Newbury",
+    "country": "UK",
+    "going": "Chase: good, good to firm in places; hurdle: good to soft",
+    "details": "British Horse Society Open NH Flat Race (GBB Race) (4-5yo, Class 4, 2m 69y, 12 runners) FORM 4%",
+    "runners": 12
+  },
+  {
+    "time": "16:07",
+    "place": "Clonmel",
+    "country": "IRE",
+    "going": "Sft",
+    "details": "racingtv.com/freetrial Flat Race (5yo+, Class , 2m 157y, 10 runners) FORM 35%",
+    "runners": 10
+  },
+  {
+    "time": "16:30",
+    "place": "Newcastle",
+    "country": "UK",
+    "going": "std",
+    "details": "Read Meg Nicholls\u0027 Blog At betmgm.co.uk EBF Novice Stakes (GBB Race) (2yo, Class 5, 1m 5y, 10 runners) FORM 11%",
+    "runners": 10
+  },
+  {
+    "time": "16:45",
+    "place": "Chelmsford City",
+    "country": "UK",
+    "going": "std",
+    "details": "Flutter Proudly Supporting Pancreatic Cancer UK Nursery (2yo, Class 6, 1m 2f, 6 runners) FORM 91%",
+    "runners": 6
+  },
+  {
+    "time": "17:00",
+    "place": "Newcastle",
+    "country": "UK",
+    "going": "std",
+    "details": "Midnite: Built For 2025 Not 2005 Handicap (3yo+, Class 4, 5f, 8 runners) FORM 100%",
+    "runners": 8
+  },
+  {
+    "time": "17:15",
+    "place": "Chelmsford City",
+    "country": "UK",
+    "going": "std",
+    "details": "Betfair Racing Podcasts Nursery (2yo, Class 6, 6f, 8 runners) FORM 79%",
+    "runners": 8
+  },
+  {
+    "time": "17:30",
+    "place": "Newcastle",
+    "country": "UK",
+    "going": "std",
+    "details": "Always Gamble Responsibly At BetMGM Handicap (3yo+, Class 6, 1m 5y, 14 runners) FORM 94%",
+    "runners": 14
+  },
+  {
+    "time": "17:45",
+    "place": "Chelmsford City",
+    "country": "UK",
+    "going": "std",
+    "details": "Juddmonte EBF Restricted Novice Stakes (GBB/GBBPlus Race) (2yo, Class 2, 1m, 16 runners) FORM 13%",
+    "runners": 16
+  },
+  {
+    "time": "18:00",
+    "place": "Newcastle",
+    "country": "UK",
+    "going": "std",
+    "details": "Midnite Are Upping The Betting Game Handicap (Div 1) (3yo+, Class 6, 6f, 14 runners) FORM 96%",
+    "runners": 14
+  },
+  {
+    "time": "18:15",
+    "place": "Chelmsford City",
+    "country": "UK",
+    "going": "std",
+    "details": "Best Odds On The Betfair Exchange Handicap (3yo+, Class 4, 1m, 12 runners) FORM 100%",
+    "runners": 12
+  },
+  {
+    "time": "18:30",
+    "place": "Newcastle",
+    "country": "UK",
+    "going": "std",
+    "details": "Midnite Are Upping The Betting Game Handicap (Div 2) (3yo+, Class 6, 6f, 14 runners) FORM 92%",
+    "runners": 14
+  },
+  {
+    "time": "18:45",
+    "place": "Chelmsford City",
+    "country": "UK",
+    "going": "std",
+    "details": "Betfair Novice Stakes (GBB Race) (3yo+, Class 5, 7f, 5 runners) FORM 26%",
+    "runners": 5
+  },
+  {
+    "time": "19:15",
+    "place": "Chelmsford City",
+    "country": "UK",
+    "going": "std",
+    "details": "Betfair Exchange Handicap (3yo+, Class 4, 6f, 11 runners) FORM 96%",
+    "runners": 11
+  },
+  {
+    "time": "19:45",
+    "place": "Chelmsford City",
+    "country": "UK",
+    "going": "std",
+    "details": "\u0027Timeform Sprint Series Qualifier\u0027 Handicap (3yo+, Class 5, 5f, 9 runners) FORM 100%",
+    "runners": 9
+  },
+  {
+    "time": "20:15",
+    "place": "Chelmsford City",
+    "country": "UK",
+    "going": "std",
+    "details": "Play Different With Betfair Handicap (3yo+, Class 6, 1m 2f, 15 runners) FORM 95%",
+    "runners": 15
   }
 ]

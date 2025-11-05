@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import races from '../../data/races.json';
 import { cancelAllRaceNotifications, scheduleRaceNotification, setupNotifications } from '../../services/notificationService';
 
@@ -11,66 +11,210 @@ interface Race {
 }
 
 export default function Index() {
-  const [alarmsActive, setAlarmsActive] = useState(false);
-  const nextAlarmTimeoutId = useRef<NodeJS.Timeout | null>(null);
+  const [activeAlarms, setActiveAlarms] = useState<Set<string>>(new Set());
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [displayedRaces, setDisplayedRaces] = useState<Race[]>([]);
+  const notificationTimeoutIds = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
   useEffect(() => {
     void setupNotifications();
     // Cleanup timeout on component unmount
     return () => {
-      if (nextAlarmTimeoutId.current) {
-        clearTimeout(nextAlarmTimeoutId.current);
-      }
+      notificationTimeoutIds.current.forEach(clearTimeout);
+      notificationTimeoutIds.current.clear();
+      void cancelAllRaceNotifications();
     };
   }, []);
 
-  const scheduleNextRace = (fromIndex: number = 0) => {
-    const now1 = new Date();
-    const now = new Date(now1.getTime() + 120000);
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
 
-    for (let i = fromIndex; i < races.length; i++) {
-      const race = races[i];
-      const [hours, minutes] = race.time.split(':').map(Number);
+    return () => clearInterval(timerId);
+  }, []);
+
+  useEffect(() => {
+    // Filter races to show only upcoming ones.
+    // This will run every time currentTime is updated (i.e., every second).
+    const now = new Date();
+    const upcomingRaces = (races as Race[]).filter(race => {
       const raceDateTime = new Date();
-      raceDateTime.setHours(hours, minutes, 0, 0);
-      const beforeRaceDateTime = new Date(raceDateTime.getTime() - 60000); // 1 minute before race time
-      
-      if (raceDateTime > now) {
-        void scheduleRaceNotification(race, raceDateTime);
-        alert(`Next race alarm set for ${race.time} at ${race.place}.`);
-        
-        const timeUntilNextCheck = raceDateTime.getTime() - now.getTime() + 1000; // 1 second after race off
-        nextAlarmTimeoutId.current = setTimeout(() => scheduleNextRace(i + 1), timeUntilNextCheck);
-        return;
-      }
-    }
+      raceDateTime.setHours(...race.time.split(':').map(Number), 0, 0);
+      return raceDateTime >= now;
+    });
+    setDisplayedRaces(upcomingRaces);
+  }, []);
 
-    alert('All races for today are finished.');
-    setAlarmsActive(false);
+  const getRaceId = (race: Race) => `${race.time}-${race.place}`;
+
+  const scheduleRaceAlarm = (race: Race) => {
+    const raceId = getRaceId(race);
+    const now = new Date();
+    const [hours, minutes] = race.time.split(':').map(Number);
+    const raceDateTime = new Date();
+    raceDateTime.setHours(hours, minutes, 0, 0);
+
+    // The notification itself will be for 2 mins before, but we can schedule the call to the service now.
+    // Let's assume we want to trigger the notification scheduling logic immediately if the race is soon.
+    // The notificationService handles the 2-minute logic.
+    if (raceDateTime > now) {
+      // The timeout is to trigger the notification scheduling, not the notification itself.
+      // For simplicity, let's schedule it to be checked immediately.
+      const timeoutId = setTimeout(() => {
+        void scheduleRaceNotification(race, raceDateTime);
+        // The alarm has been processed, we can update the UI if needed,
+        // but for now, we'll just let the status reflect it was set.
+      }, 1); // Schedule it almost immediately
+      notificationTimeoutIds.current.set(raceId, timeoutId);
+    }
+  };
+
+  const cancelRaceAlarm = (race: Race) => {
+    const raceId = getRaceId(race);
+    const timeoutId = notificationTimeoutIds.current.get(raceId);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      notificationTimeoutIds.current.delete(raceId);
+    }
+    // This is a simplification. To cancel a specific native notification,
+    // scheduleRaceNotification would need to return its ID, which we would store.
+    // For now, we cancel all and re-schedule the ones that should remain.
+    void cancelAllRaceNotifications();
+  };
+
+  const handleToggleRaceAlarm = (race: Race) => {
+    const raceId = getRaceId(race);
+    const newActiveAlarms = new Set(activeAlarms);
+    const isCurrentlyActive = newActiveAlarms.has(raceId);
+
+    if (isCurrentlyActive) {
+      newActiveAlarms.delete(raceId);
+      cancelRaceAlarm(race);
+    } else {
+      newActiveAlarms.add(raceId);
+      scheduleRaceAlarm(race);
+    }
+    setActiveAlarms(newActiveAlarms);
+
+    // Resync all native notifications
+    if (!isCurrentlyActive) {
+      // If we just added one, no need to cancel all.
+    } else {
+      // If we removed one, we need to re-schedule the others.
+      newActiveAlarms.forEach(id => {
+        const [time, place] = id.split('-');
+        const raceToReschedule = (races as Race[]).find(r => r.time === time && r.place === place);
+        if (raceToReschedule) {
+          scheduleRaceAlarm(raceToReschedule);
+        }
+      });
+    }
   };
 
   const handleToggleAlarms = () => {
-    if (alarmsActive) {
+    if (activeAlarms.size > 0) {
+      // Stop all alarms
       void cancelAllRaceNotifications();
-      if (nextAlarmTimeoutId.current) {
-        clearTimeout(nextAlarmTimeoutId.current);
-      }
-      alert('All race notifications for today have been cancelled.');
-      setAlarmsActive(false);
+      notificationTimeoutIds.current.forEach(clearTimeout);
+      notificationTimeoutIds.current.clear();
+      setActiveAlarms(new Set());
     } else {
-      setAlarmsActive(true);
-      scheduleNextRace(0);
+      // Start all alarms for upcoming races
+      const newActiveAlarms = new Set<string>();
+      const now = new Date();
+      (races as Race[]).forEach(race => {
+        const raceDateTime = new Date();
+        raceDateTime.setHours(...race.time.split(':').map(Number), 0, 0);
+        if (raceDateTime > now) {
+          const raceId = getRaceId(race);
+          newActiveAlarms.add(raceId);
+          scheduleRaceAlarm(race);
+        }
+      });
+      setActiveAlarms(newActiveAlarms);
     }
+  };
+
+  const getRaceStatus = (race: Race) => {
+    const now = new Date();
+    const raceId = getRaceId(race);
+    const raceDateTime = new Date();
+    raceDateTime.setHours(...race.time.split(':').map(Number), 0, 0);
+
+    if (raceDateTime < now) {
+      return { text: 'Race OFF', color: '#888' };
+    }
+
+    if (activeAlarms.has(raceId)) {
+      return { text: 'Alarm Set', color: '#34A853' };
+    }
+
+    return { text: 'Not Set', color: '#e02020ff' };
+  };
+
+  const getCountdown = (raceTime: string) => {
+    const raceDateTime = new Date();
+    raceDateTime.setHours(...raceTime.split(':').map(Number), 0, 0);
+
+    const diff = raceDateTime.getTime() - currentTime.getTime();
+
+    if (diff <= 0) {
+      return null;
+    }
+
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
+
+  const renderRaceItem = ({ item }: { item: Race }) => {
+    const status = getRaceStatus(item);
+    const countdown = getCountdown(item.time);
+    const isFinished = new Date().setHours(...item.time.split(':').map(Number), 0, 0) < new Date().getTime();
+    const isAlarmActive = activeAlarms.has(getRaceId(item));
+    return (
+      <View style={styles.raceItemContainer}>
+        <View style={styles.raceInfo}>
+          <Text numberOfLines={1} ellipsizeMode="tail">
+            <Text style={styles.raceTime}>{item.time} </Text>
+            <Text style={styles.racePlace}>{item.place} </Text>
+            <Text style={styles.raceDetails}>
+              {item.details} ({item.runners} runners)
+            </Text>
+          </Text>
+        </View>
+        {countdown && isAlarmActive && <Text style={styles.countdownText}>{countdown}</Text>}
+        <Pressable
+          onPress={() => !isFinished && handleToggleRaceAlarm(item)}
+          disabled={isFinished}
+        >
+          <View style={[styles.statusContainer, { backgroundColor: status.color }]}>
+            <Text style={styles.statusText}>{status.text}</Text>
+          </View>
+        </Pressable>
+      </View>
+    );
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Home screen</Text>
-      <View style={styles.separator} />
-      <Button
-        title={alarmsActive ? 'Stop Race Alarms' : 'Start Race Alarms'}
-        onPress={handleToggleAlarms}
-        color={alarmsActive ? '#e02020ff' : '#34A853'}
+      <View style={styles.buttonContainer}>
+        <Pressable onPress={handleToggleAlarms}>
+          <View style={[styles.bigButton, { backgroundColor: activeAlarms.size > 0 ? '#e02020ff' : '#34A853' }]}>
+            <Text style={styles.bigButtonText}>
+              {activeAlarms.size > 0 ? 'Stop All Alarms' : 'Start All Alarms'}
+            </Text>
+          </View>
+        </Pressable>
+      </View>
+      <FlatList
+        data={displayedRaces}
+        renderItem={renderRaceItem}
+        keyExtractor={(item) => `${item.time}-${item.place}`}
+        style={styles.list}
       />
     </View>
   );
@@ -79,20 +223,77 @@ export default function Index() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2f8043ff',
+    backgroundColor: '#d8babaff', // A softer, light grey background
+  },
+  buttonContainer: {
+    marginHorizontal: 8,
+    marginVertical: 10,
+  },
+  bigButton: {
+    paddingVertical: 50,
+    paddingHorizontal: 30,
+    borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    elevation: 3,
   },
-  text: {
+  bigButtonText: {
+    fontSize: 22,
     color: '#fff',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
-  link: {
-    marginTop: 8,
+  list: {
+    width: '100%',
   },
-  separator: {
-    marginVertical: 20,
-    height: 1,
-    width: '10%',
-    backgroundColor: '#eee',
+  raceItemContainer: {
+    backgroundColor: '#d8babaff', // A gentle off-white for the cards
+    padding: 15,
+    marginVertical: 4,
+    marginHorizontal: 8,
+    borderRadius: 8,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+  },
+  raceInfo: {
+    flex: 1,
+    marginRight: 8,
+  },
+  raceTime: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  racePlace: {
+    fontSize: 16,
+    color: '#000',
+  },
+  raceDetails: {
+    fontSize: 14,
+    color: '#000',
+  },
+  countdownText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#c70000',
+    marginHorizontal: 8,
+    fontStyle: 'normal',
+  },
+  statusContainer: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 12,
+    marginLeft: 10,
+  },
+  statusText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 12,
   },
 });
