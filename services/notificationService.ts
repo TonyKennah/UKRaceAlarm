@@ -79,27 +79,33 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
           G5: 783.99,
         };
 
-        // A more complete "First Call" melody
+        // A transcription of the "First Call" bugle melody, based on the classic 4-bar structure.
+        // Tempo is set to be "Quick Time".
         const melody = [
-          // Bar 1
-          { note: notes.G4, duration: 0.15, delay: 0.0 },
-          { note: notes.C5, duration: 0.15, delay: 0.2 },
-          { note: notes.E5, duration: 0.15, delay: 0.4 },
-          { note: notes.G5, duration: 0.4, delay: 0.6 },
-          // Bar 2
-          { note: notes.G4, duration: 0.15, delay: 1.2 },
-          { note: notes.C5, duration: 0.15, delay: 1.4 },
-          { note: notes.E5, duration: 0.15, delay: 1.6 },
-          { note: notes.G5, duration: 0.4, delay: 1.8 },
-          // Bar 3
-          { note: notes.C5, duration: 0.15, delay: 2.4 },
-          { note: notes.C5, duration: 0.15, delay: 2.6 },
-          { note: notes.C5, duration: 0.3, delay: 2.8 },
-          // Bar 4
-          { note: notes.G4, duration: 0.15, delay: 3.2 },
-          { note: notes.C5, duration: 0.15, delay: 3.4 },
-          { note: notes.E5, duration: 0.15, delay: 3.6 },
-          { note: notes.G5, duration: 0.5, delay: 3.8 },
+          // Bar 1: C-E-G (triplet), C, G
+          { note: notes.C5, duration: 0.1, delay: 0.0 },  // Triplet 1
+          { note: notes.E5, duration: 0.1, delay: 0.1 },  // Triplet 2
+          { note: notes.G5, duration: 0.1, delay: 0.2 },  // Triplet 3
+          { note: notes.C5, duration: 0.25, delay: 0.4 }, // Quarter note
+          { note: notes.G4, duration: 0.25, delay: 0.7 }, // Quarter note
+
+          // Bar 2: C, E, G, C, E
+          { note: notes.C5, duration: 0.25, delay: 1.1 }, // Quarter note
+          { note: notes.E5, duration: 0.12, delay: 1.4 }, // Eighth note
+          { note: notes.G5, duration: 0.12, delay: 1.55 },// Eighth note
+          { note: notes.C5, duration: 0.25, delay: 1.7 }, // Quarter note
+          { note: notes.E5, duration: 0.25, delay: 2.0 }, // Quarter note
+
+          // Bar 3: C-E-G (triplet), C, G
+          { note: notes.C5, duration: 0.1, delay: 2.4 },  // Triplet 1
+          { note: notes.E5, duration: 0.1, delay: 2.5 },  // Triplet 2
+          { note: notes.G5, duration: 0.1, delay: 2.6 },  // Triplet 3
+          { note: notes.C5, duration: 0.25, delay: 2.8 }, // Quarter note
+          { note: notes.G4, duration: 0.25, delay: 3.1 }, // Quarter note
+
+          // Bar 4: E, C
+          { note: notes.E5, duration: 0.25, delay: 3.5 }, // Quarter note
+          { note: notes.C5, duration: 0.5, delay: 3.8 },  // Half note
         ];
 
         const startTime = audioContext.currentTime;

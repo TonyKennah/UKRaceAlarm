@@ -81,6 +81,8 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   button: { borderRadius: 10, padding: 10, elevation: 2 },
   buttonClose: { backgroundColor: '#2196F3' },
