@@ -11,6 +11,9 @@ This is an Expo project that provides alarms for UK & Irish horse races. Set ala
 - **Live Countdown**: See a real-time countdown timer for each race that has an active alarm.
 - **Auto-Updating List**: Finished races are automatically removed from the list to keep the view focused on what's next.
 
+<img width="626" height="563" alt="image" src="https://github.com/user-attachments/assets/85044d30-8531-431a-a3a0-b5dd32a6b013" />
+
+
 ## Get started
 
 1. Install dependencies
