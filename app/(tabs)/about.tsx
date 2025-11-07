@@ -1,28 +1,42 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
 import { playFirstCallMelody, playXXXXMelody, playYYYYMelody } from '../../services/notificationService';
+import { getSelectedMelody, Melody, saveSelectedMelody } from '../../services/settingsService';
 
 export default function AboutScreen() {
   const appName = "UK Race Alarm";
   const appVersion = "1";
   const currentDate = "05/11/2025";
-  const [selectedMelody, setSelectedMelody] = useState('First Call');
-  const melodies = ['First Call', 'XXXX', 'YYYY'];
+  const [selectedMelody, setSelectedMelody] = useState<Melody>('First Call');
+  const melodies: Melody[] = ['First Call', 'Bugle', 'Hawaii'];
+
+  useEffect(() => {
+    const loadMelody = async () => {
+      const savedMelody = await getSelectedMelody();
+      setSelectedMelody(savedMelody);
+    };
+    void loadMelody();
+  }, []);
 
   const handleTestMelody = () => {
     switch (selectedMelody) {
       case 'First Call':
         playFirstCallMelody();
         break;
-      case 'XXXX':
+      case 'Bugle':
         playXXXXMelody();
         break;
-      case 'YYYY':
+      case 'Hawaii':
         playYYYYMelody();
         break;
       default:
         playFirstCallMelody();
     }
+  };
+
+  const handleMelodySelection = (melody: Melody) => {
+    setSelectedMelody(melody);
+    void saveSelectedMelody(melody);
   };
 
   return (
@@ -47,7 +61,7 @@ export default function AboutScreen() {
         <Text style={styles.melodyTitle}>Alarm Melody</Text>
         <View style={styles.radioGroup}>
           {melodies.map((melody) => (
-            <Pressable key={melody} style={styles.radioButton} onPress={() => setSelectedMelody(melody)}>
+            <Pressable key={melody} style={styles.radioButton} onPress={() => handleMelodySelection(melody)}>
               <View style={[styles.radioOuter, selectedMelody === melody && styles.radioSelectedOuter]}>
                 {selectedMelody === melody && <View style={styles.radioInner} />}
               </View>

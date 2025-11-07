@@ -1,6 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
 import { AppEvents } from './eventService';
+import { getSelectedMelody } from './settingsService';
 
 // This configures the app to show a notification alert when it's in the foreground.
 Notifications.setNotificationHandler({
@@ -299,8 +300,21 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
 
   // For web, use a recurring browser alert as a fallback for notifications.
   if (Platform.OS === 'web') {
-    const timeoutId = setTimeout(() => {
-      playFirstCallMelody();
+    const timeoutId = setTimeout(async () => {
+      const selectedMelody = await getSelectedMelody();
+      switch (selectedMelody) {
+        case 'First Call':
+          playFirstCallMelody();
+          break;
+        case 'Bugle':
+          playXXXXMelody();
+          break;
+        case 'Hawaii':
+          playYYYYMelody();
+          break;
+        default:
+          playFirstCallMelody();
+      }
       AppEvents.emit('showAlert', {
         title: 'TWO MINUTE WARNING',
         message: `Race Time: ${race.time} at ${race.place}\n${race.details}`,
