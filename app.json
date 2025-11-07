@@ -22,8 +22,10 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
+      "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/favicon.png",
+      "baseUrl": "/UKRaceAlarm/"
     },
     "plugins": [
       "expo-router",
@@ -42,8 +44,7 @@
     ],
     "experiments": {
       "typedRoutes": true,
-      "reactCompiler": true,
-      "baseUrl": "/UKRaceAlarm"
+      "reactCompiler": true
     }
   }
 }
