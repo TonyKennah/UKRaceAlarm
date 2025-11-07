@@ -10,6 +10,7 @@ This is an Expo project that provides alarms for UK & Irish horse races. Set ala
 - **Bulk Alarm Control**: Start or stop alarms for all upcoming races with a single large, accessible button.
 - **Individual Alarms**: Tap the status indicator on any race to toggle its alarm on or off, giving you granular control.
 - **Two-Minute Warnings**: Receive a push notification two minutes before each selected race is due to start.
+- **Configurable Alarm Melody**: Choose your preferred alarm sound from a selection of melodies on the About page.
 - **Live Countdown**: See a real-time countdown timer for each race that has an active alarm.
 - **Auto-Updating List**: Finished races are automatically removed from the list to keep the view focused on what's next.
 
