@@ -1,0 +1,1 @@
+The code is written in TypeScript and uses functional components with React Hooks. Styling is done using `StyleSheet.create`. The project follows standard React Native and TypeScript conventions. File-based routing is used via `expo-router`. The code is well-structured and readable.

@@ -1,0 +1,1 @@
+The project is a mobile application for UK & Irish horse racing alarms. It allows users to view daily races, set alarms for all or individual races, and receive two-minute warnings before a race starts.

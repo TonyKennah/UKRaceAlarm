@@ -1,0 +1,6 @@
+- `npm install`: Install dependencies
+- `npx expo start`: Start the development server
+- `npm run android`: Start the app on an Android emulator
+- `npm run ios`: Start the app on an iOS simulator
+- `npm run web`: Start the app in a web browser
+- `npm run lint`: Lint the code using ESLint
