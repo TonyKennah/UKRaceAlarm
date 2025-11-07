@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { AppEvents } from '../services/eventService';
 
@@ -11,11 +11,19 @@ interface AlertData {
 export default function CustomAlert() {
   const [visible, setVisible] = useState(false);
   const [alertData, setAlertData] = useState<AlertData | null>(null);
+  const scrollYRef = useRef(0);
 
   useEffect(() => {
     if (Platform.OS !== 'web') return;
 
     const handleShowAlert = (data: AlertData) => {
+      // Save current scroll position and lock the body
+      scrollYRef.current = window.scrollY;
+      const body = document.body;
+      body.style.position = 'fixed';
+      body.style.top = `-${scrollYRef.current}px`;
+      body.style.width = '100%';
+
       setAlertData(data);
       setVisible(true);
     };
@@ -39,16 +47,27 @@ export default function CustomAlert() {
     };
   }, []);
 
+  const handleDismiss = () => {
+    setVisible(false);
+    if (Platform.OS === 'web') {
+      // Restore body styles and scroll position
+      const body = document.body;
+      body.style.position = '';
+      body.style.top = '';
+      body.style.width = '';
+      window.scrollTo(0, scrollYRef.current);
+    }
+  };
+
   if (!visible || !alertData) {
     return null;
   }
 
   return (
     <Modal
-      animationType="fade"
       transparent={true}
       visible={visible}
-      onRequestClose={() => setVisible(false)}
+      onRequestClose={handleDismiss}
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
@@ -57,8 +76,8 @@ export default function CustomAlert() {
           </Text>
           <Text style={styles.modalText}>{alertData.message}</Text>
           <Pressable
-            style={[styles.button, styles.buttonClose]}
-            onPress={() => setVisible(false)}
+            style={[styles.button, styles.buttonClose]} 
+            onPress={handleDismiss}
           >
             <Text style={styles.textStyle}>Dismiss</Text>
           </Pressable>
