@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import races from '../../data/races.json';
 import { AppEvents } from '../../services/eventService';
-import { cancelAllRaceNotifications, scheduleRaceNotification, setupNotifications } from '../../services/notificationService';
+import { cancelAllRaceNotifications, scheduleRaceNotification } from '../../services/notificationService';
 
 interface Race {
   time: string;
@@ -16,10 +16,29 @@ export default function Index() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [warningAlarms, setWarningAlarms] = useState<Set<string>>(new Set());
   const [displayedRaces, setDisplayedRaces] = useState<Race[]>([]);
+  const [raceData, setRaceData] = useState<Race[] | null>(null);
   const notificationTimeoutIds = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
   useEffect(() => {
-    void setupNotifications();
+    const fetchRaces = async () => {
+      try {
+        const response = await fetch('https://www.pluckier.co.uk/race.json');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const remoteRaces = await response.json();
+        setRaceData(remoteRaces);
+        console.log('Successfully fetched remote race data.');
+      } catch (error) {
+        console.error('Failed to fetch remote races, falling back to local data:', error);
+        // Fallback to local data
+        setRaceData(races as Race[]);
+      }
+    };
+
+    void fetchRaces();
+
+    // void setupNotifications(); // This is now handled on user interaction
     // Cleanup timeout on component unmount
     return () => {
       notificationTimeoutIds.current.forEach(clearTimeout);
@@ -37,9 +56,11 @@ export default function Index() {
   }, []);
 
   useEffect(() => {
+    if (!raceData) return; // Don't run if races are not loaded yet
+
     // Filter races to show only upcoming ones.
     // This will run every time currentTime is updated (i.e., every second).
-    const upcomingRaces = (races as Race[]).filter((race) => {
+    const upcomingRaces = raceData.filter((race) => {
       const raceDateTime = new Date();
       raceDateTime.setHours(...race.time.split(':').map(Number), 0, 0);
       return raceDateTime >= currentTime;
@@ -54,7 +75,7 @@ export default function Index() {
       }
     });
     setDisplayedRaces(upcomingRaces);
-  }, [currentTime]);
+  }, [currentTime, raceData]);
 
   const getRaceId = (race: Race) => `${race.time}-${race.place}`;
 
@@ -114,8 +135,8 @@ export default function Index() {
     } else {
       // If we removed one, we need to re-schedule the others.
       newActiveAlarms.forEach(id => {
-        const [time, place] = id.split('-');
-        const raceToReschedule = (races as Race[]).find(r => r.time === time && r.place === place);
+        const [time, place] = id.split('-'); 
+        const raceToReschedule = raceData?.find(r => r.time === time && r.place === place);
         if (raceToReschedule) {
           scheduleRaceAlarm(raceToReschedule);
         }
@@ -134,7 +155,7 @@ export default function Index() {
       // Start all alarms for upcoming races
       const newActiveAlarms = new Set<string>();
       const now = new Date();
-      (races as Race[]).forEach(race => {
+      raceData?.forEach(race => {
         const raceDateTime = new Date();
         raceDateTime.setHours(...race.time.split(':').map(Number), 0, 0);
         if (raceDateTime > now) {
@@ -215,6 +236,12 @@ export default function Index() {
   };
 
   return (
+    !raceData ? (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#7e3c78ff" />
+        <Text>Loading races...</Text>
+      </View>
+    ) :
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
         <Pressable onPress={handleToggleAlarms}>
@@ -330,5 +357,10 @@ const styles = StyleSheet.create({
     color: '#000',
     textAlign: 'center',
     fontStyle: 'italic',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
