@@ -42,7 +42,7 @@ export function useRaceData(currentTime: Date) {
 
     const displayedRaceIds = new Set(upcomingRaces.map(getRaceId));
     displayedRaces.forEach(race => {
-      if (!displayedRaceIds.has(race.id)) {
+      if (!displayedRaceIds.has(getRaceId(race))) {
         AppEvents.emit('closeAlert', { raceId: getRaceId(race) });
       }
     });
