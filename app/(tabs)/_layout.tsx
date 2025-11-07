@@ -1,7 +1,8 @@
 import { Tabs } from 'expo-router';
 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import { faHome, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { StyleSheet } from 'react-native';
 
 export default function TabLayout() {
   return (
@@ -18,20 +19,30 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons name={focused ? 'home' : 'home-outline'} color={color} size={24} />
-          ),
+          tabBarIcon: ({ color }) => <FontAwesomeIcon icon={faHome} size={24} color={color} />,
         }}
       />
       <Tabs.Screen
         name="about"
         options={{
           title: 'About',
-          tabBarIcon: ({ color, focused }) => (
-            <MaterialCommunityIcons name={focused ? 'information' : 'information-outline'} color={color} size={24} />
-          ),
+          tabBarIcon: ({ color }) => <FontAwesomeIcon icon={faInfoCircle} size={24} color={color} />,
         }}
       />
     </Tabs>
   );
 }
+
+// You might need to add some styles if the FontAwesomeIcon doesn't render perfectly
+// within the tab bar without it, but usually it's fine.
+const styles = StyleSheet.create({
+  // Example if needed:
+  // icon: {
+  //   marginBottom: -3,
+  // },
+  // headerRight: {
+  //   marginRight: 15,
+  //   flexDirection: 'row',
+  //   gap: 10,
+  // },
+});
