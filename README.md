@@ -2,6 +2,8 @@
 
 This is an Expo project that provides alarms for UK & Irish horse races. Set alarms for all races or toggle them individually to receive a two-minute warning before the race is off.
 
+<img width="626" height="563" alt="image" src="https://github.com/user-attachments/assets/85044d30-8531-431a-a3a0-b5dd32a6b013" />
+
 ## Features
 
 - **Daily Race List**: View all of today's UK & Irish horse races in a clean, easy-to-read list.
@@ -11,8 +13,23 @@ This is an Expo project that provides alarms for UK & Irish horse races. Set ala
 - **Live Countdown**: See a real-time countdown timer for each race that has an active alarm.
 - **Auto-Updating List**: Finished races are automatically removed from the list to keep the view focused on what's next.
 
-<img width="626" height="563" alt="image" src="https://github.com/user-attachments/assets/85044d30-8531-431a-a3a0-b5dd32a6b013" />
+## Tech Stack
 
+The project is built with React Native using the Expo framework. The language used is TypeScript. Key libraries include:
+- `@expo/vector-icons` for icons
+- `@react-native-async-storage/async-storage` for storage
+- `@react-navigation/bottom-tabs` for navigation
+- `expo-notifications` for push notifications
+- `expo-router` for file-based routing
+
+## Project Structure
+
+The project is structured as follows:
+- `app/`: Contains the screens and routing logic, using file-based routing with `expo-router`.
+- `assets/`: Contains static assets like images and fonts.
+- `components/`: Contains reusable React components.
+- `data/`: Contains static data, such as the `races.json` file.
+- `services/`: Contains business logic, such as notification and event services.
 
 ## Get started
 
@@ -36,6 +53,15 @@ In the output, you'll find options to open the app in a
 - [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## Available Scripts
+
+- `npm install`: Install dependencies
+- `npx expo start`: Start the development server
+- `npm run android`: Start the app on an Android emulator
+- `npm run ios`: Start the app on an iOS simulator
+- `npm run web`: Start the app in a web browser
+- `npm run lint`: Lint the code using ESLint
 
 ## Learn more
 
