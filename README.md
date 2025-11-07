@@ -4,6 +4,8 @@ This is an Expo project that provides alarms for UK & Irish horse races. Set ala
 
 <img width="626" height="563" alt="image" src="https://github.com/user-attachments/assets/85044d30-8531-431a-a3a0-b5dd32a6b013" />
 
+<img width="942" height="951" alt="image" src="https://github.com/user-attachments/assets/50d1fb7c-1cca-4b3f-9118-3f2efa195959" />
+
 ## Features
 
 - **Daily Race List**: View all of today's UK & Irish horse races in a clean, easy-to-read list.
