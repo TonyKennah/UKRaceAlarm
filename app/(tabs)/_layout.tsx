@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
 
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 export default function TabLayout() {
@@ -19,7 +19,7 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
+            <MaterialCommunityIcons name={focused ? 'home' : 'home-outline'} color={color} size={24} />
           ),
         }}
       />
@@ -28,7 +28,7 @@ export default function TabLayout() {
         options={{
           title: 'About',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'information-circle' : 'information-circle-outline'} color={color} size={24} />
+            <MaterialCommunityIcons name={focused ? 'information' : 'information-outline'} color={color} size={24} />
           ),
         }}
       />

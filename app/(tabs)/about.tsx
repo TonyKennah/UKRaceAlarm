@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Linking, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { playFirstCallMelody, playXXXXMelody, playYYYYMelody } from '../../services/notificationService';
 import { getSelectedMelody, Melody, saveSelectedMelody } from '../../services/settingsService';
 
@@ -40,7 +40,7 @@ export default function AboutScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.scrollContainer} contentContainerStyle={styles.container}>
       <View style={styles.mainContent}>
 
       <Text style={styles.title}>{appName}</Text>
@@ -73,21 +73,23 @@ export default function AboutScreen() {
           <Text style={styles.testButtonText}>Test Melody</Text>
         </Pressable>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  scrollContainer: {
     flex: 1,
     backgroundColor: '#7e3c78ff',
-    justifyContent: 'space-between',
+  },
+  container: {
+    flexGrow: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 40,
     paddingHorizontal: 20,
   },
   mainContent: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
