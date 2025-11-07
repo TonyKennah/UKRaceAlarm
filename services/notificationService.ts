@@ -156,7 +156,7 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
     const timeoutId = setTimeout(async () => {
       const selectedMelody = await getSelectedMelody();
       switch (selectedMelody) {
-        case 'First Call':
+        case 'Call':
           playFirstCallMelody();
           break;
         case 'Bugle':

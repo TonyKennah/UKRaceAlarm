@@ -7,8 +7,8 @@ export default function AboutScreen() {
   const appName = "UK Race Alarm";
   const appVersion = "1";
   const currentDate = "05/11/2025";
-  const [selectedMelody, setSelectedMelody] = useState<Melody>('First Call');
-  const melodies: Melody[] = ['First Call', 'Bugle', 'Hawaii'];
+  const [selectedMelody, setSelectedMelody] = useState<Melody>('Call');
+  const melodies: Melody[] = ['Call', 'Bugle', 'Hawaii'];
 
   useEffect(() => {
     const loadMelody = async () => {
@@ -20,7 +20,7 @@ export default function AboutScreen() {
 
   const handleTestMelody = () => {
     switch (selectedMelody) {
-      case 'First Call':
+      case 'Call':
         playFirstCallMelody();
         break;
       case 'Bugle':
