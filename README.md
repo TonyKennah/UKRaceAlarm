@@ -25,7 +25,7 @@ The web version of this application is deployed on GitHub Pages. You can try it 
 ## Tech Stack
 
 The project is built with React Native using the Expo framework. The language used is TypeScript. Key libraries include:
-- `@expo/vector-icons` for icons
+- `@fortawesome/react-native-fontawesome` for icons
 - `@react-native-async-storage/async-storage` for storage
 - `@react-navigation/bottom-tabs` for navigation
 - `expo-notifications` for push notifications
