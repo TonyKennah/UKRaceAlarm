@@ -5,7 +5,7 @@ import { getSelectedMelody, Melody, saveSelectedMelody } from '../../services/se
 
 export default function AboutScreen() {
   const appName = "UK Race Alarm";
-  const appVersion = "1";
+  const appVersion = "1.0.1";
   const currentDate = "05/11/2025";
   const [selectedMelody, setSelectedMelody] = useState<Melody>('Call');
   const melodies: Melody[] = ['Call', 'Bugle', 'Hawaii'];
@@ -52,7 +52,7 @@ export default function AboutScreen() {
         Set alarms for all races or toggle them individually to receive a two-minute warning before the race is off.
       </Text>
       <View style={styles.separator} />
-      <Text style={styles.credit}>Brought to you by</Text>
+      <Text style={styles.credit}>Brought to you by TK courtesy of</Text>
       <Text style={styles.pluckier} onPress={() => Linking.openURL('https://www.pluckier.co.uk')}>
         Pluckier
       </Text>
