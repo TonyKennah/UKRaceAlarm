@@ -2,6 +2,12 @@
 
 This is an Expo project that provides alarms for UK & Irish horse races. Set alarms for all races or toggle them individually to receive a two-minute warning before the race is off.
 
+## Live Demo
+
+The web version of this application is deployed on GitHub Pages. You can try it out here:
+
+[**https://tonykennah.github.io/UKRaceAlarm/**](https://tonykennah.github.io/UKRaceAlarm/)
+
 <img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/85044d30-8531-431a-a3a0-b5dd32a6b013" />
 
 <img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/50d1fb7c-1cca-4b3f-9118-3f2efa195959" />
@@ -48,6 +54,17 @@ The project is structured as follows:
    npx expo start
    ```
 
+3. Important to create deploy and predeploy in app.json
+
+   ```bash
+   npm install --save-dev gh-pages
+   ```
+
+   ```bash
+   npm run deploy
+   ```
+
+
 In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
@@ -65,6 +82,18 @@ You can start developing by editing the files inside the **app** directory. This
 - `npm run ios`: Start the app on an iOS simulator
 - `npm run web`: Start the app in a web browser
 - `npm run lint`: Lint the code using ESLint
+
+## Deployment
+
+This project is configured for deployment to GitHub Pages.
+
+1.  Build the static web output:
+    ```bash
+    npx expo export:web
+    ```
+
+2.  The output will be generated in the `dist` directory. This directory can be deployed to any static site hosting service. For deploying to GitHub Pages, you can use a package like `gh-pages` to easily push the contents of the `dist` folder to the `gh-pages` branch of your repository.
+
 
 ## Learn more
 
