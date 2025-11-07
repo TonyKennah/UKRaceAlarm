@@ -49,14 +49,14 @@ export const playFirstCallMelody = () => {
   const playSound = async () => {
     try {
       const { sound } = await Audio.Sound.createAsync(
-        require('../assets/sounds/firstcall.wav')
+        require('../assets/sounds/firstcall.mp3')
       );
       await sound.playAsync();
       // Optionally, you can unload the sound after it finishes playing to free up resources.
       // For short, single-shot sounds, this might not be strictly necessary immediately.
       // await sound.unloadAsync();
     } catch (error) {
-      console.error('Error playing firstcall.wav:', error);
+      console.error('Error playing firstcall.mp3:', error);
     }
   };
   void playSound(); // Call the async function
