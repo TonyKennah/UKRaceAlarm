@@ -1,12 +1,15 @@
 import Slider from '@react-native-community/slider';
 import { useEffect, useState } from 'react';
-import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { playSound, setVolume as setAudioVolume } from '../../services/audioManager';
 import { getSelectedMelody, getVolume, Melody, saveSelectedMelody } from '../../services/settingsService';
 
 export default function AboutScreen() {
   const appName = "UK Race Alarm";
-  const appVersion = "1.0.2";
+  // A simple check for mobile web. On mobile browsers, volume is controlled by the device hardware buttons.
+  const isMobileWeb = Platform.OS === 'web' && (typeof window !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+
+  const appVersion = "1.0.3";
   const currentDate = "05/11/2025";
   const [selectedMelody, setSelectedMelody] = useState<Melody>('Call');
   const [volume, setLocalVolume] = useState(1);
@@ -72,21 +75,30 @@ export default function AboutScreen() {
             </Pressable>
           ))}
         </View>
+        {isMobileWeb ? (
+          <Text style={styles.volumeInfoText}>Use your device's volume buttons to adjust alarm sound.</Text>
+        ) : (
+          <>
+            <Text style={styles.volumeLabel}>Volume</Text>
+            <View style={styles.volumeSliderContainer}>
+              <Slider
+                style={styles.slider}
+                minimumValue={0}
+                maximumValue={1}
+                value={volume}
+                onValueChange={setLocalVolume} // Updates UI and local state in real-time
+                onSlidingComplete={handleSlidingComplete} // Finalizes volume and plays preview
+                minimumTrackTintColor="#e02020ff"
+                maximumTrackTintColor="#ffffff"
+                thumbTintColor="#ffffff"
+              />
+              <Text style={styles.volumePercentageText}>{`${Math.round(volume * 100)}%`}</Text>
+            </View>
+          </>
+        )}
         <Pressable style={styles.testButton} onPress={handleTestMelody}>
           <Text style={styles.testButtonText}>Test Melody</Text>
         </Pressable>
-        <Text style={styles.volumeLabel}>Volume: {Math.round(volume * 100)}%</Text>
-        <Slider
-          style={styles.slider}
-          minimumValue={0}
-          maximumValue={1}
-          value={volume}
-          onValueChange={setLocalVolume} // Updates UI and local state in real-time
-          onSlidingComplete={handleSlidingComplete} // Finalizes volume and plays preview
-          minimumTrackTintColor="#e02020ff"
-          maximumTrackTintColor="#ffffff"
-          thumbTintColor="#ffffff"
-        />
       </View>
     </ScrollView>
   );
@@ -199,6 +211,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 8,
+    marginTop: 20,
   },
   testButtonText: {
     color: '#fff',
@@ -208,11 +221,29 @@ const styles = StyleSheet.create({
   volumeLabel: {
     fontSize: 16,
     color: '#fff',
-    marginTop: 20,
+    alignSelf: 'flex-start',
     marginBottom: 5,
   },
-  slider: {
+  volumeSliderContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '100%',
+  },
+  slider: {
+    flex: 1,
     height: 40,
+  },
+  volumePercentageText: {
+    fontSize: 16,
+    color: '#fff',
+    minWidth: 45, // Ensures space for "100%"
+    textAlign: 'right',
+  },
+  volumeInfoText: {
+    fontSize: 16,
+    color: '#fff',
+    textAlign: 'center',
+    marginTop: 20,
+    paddingHorizontal: 10,
   },
 });
