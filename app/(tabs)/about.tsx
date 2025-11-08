@@ -1,13 +1,15 @@
+import Slider from '@react-native-community/slider';
 import { useEffect, useState } from 'react';
 import { Linking, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { playFirstCallMelody, playXXXXMelody, playYYYYMelody } from '../../services/notificationService';
-import { getSelectedMelody, Melody, saveSelectedMelody } from '../../services/settingsService';
+import { playSound, setVolume as setAudioVolume } from '../../services/audioManager';
+import { getSelectedMelody, getVolume, Melody, saveSelectedMelody } from '../../services/settingsService';
 
 export default function AboutScreen() {
   const appName = "UK Race Alarm";
-  const appVersion = "1.0.1";
+  const appVersion = "1.0.2";
   const currentDate = "05/11/2025";
   const [selectedMelody, setSelectedMelody] = useState<Melody>('Call');
+  const [volume, setLocalVolume] = useState(1);
   const melodies: Melody[] = ['Call', 'Bugle', 'Hawaii'];
 
   useEffect(() => {
@@ -15,28 +17,29 @@ export default function AboutScreen() {
       const savedMelody = await getSelectedMelody();
       setSelectedMelody(savedMelody);
     };
+    const loadVolume = async () => {
+      const savedVolume = await getVolume();
+      setLocalVolume(savedVolume);
+    };
     void loadMelody();
+    void loadVolume();
   }, []);
 
-  const handleTestMelody = () => {
-    switch (selectedMelody) {
-      case 'Call':
-        playFirstCallMelody();
-        break;
-      case 'Bugle':
-        playXXXXMelody();
-        break;
-      case 'Hawaii':
-        playYYYYMelody();
-        break;
-      default:
-        playFirstCallMelody();
-    }
+  const handleTestMelody = async () => {
+    await playSound(selectedMelody);
   };
 
   const handleMelodySelection = (melody: Melody) => {
     setSelectedMelody(melody);
     void saveSelectedMelody(melody);
+  };
+
+  // This is called when the user releases the slider
+  const handleSlidingComplete = async (value: number) => {
+    // setAudioVolume saves the value and updates the sound objects
+    await setAudioVolume(value);
+    // Play a sound so the user can hear the new volume
+    await playSound(selectedMelody);
   };
 
   return (
@@ -72,6 +75,18 @@ export default function AboutScreen() {
         <Pressable style={styles.testButton} onPress={handleTestMelody}>
           <Text style={styles.testButtonText}>Test Melody</Text>
         </Pressable>
+        <Text style={styles.volumeLabel}>Volume: {Math.round(volume * 100)}%</Text>
+        <Slider
+          style={styles.slider}
+          minimumValue={0}
+          maximumValue={1}
+          value={volume}
+          onValueChange={setLocalVolume} // Updates UI and local state in real-time
+          onSlidingComplete={handleSlidingComplete} // Finalizes volume and plays preview
+          minimumTrackTintColor="#e02020ff"
+          maximumTrackTintColor="#ffffff"
+          thumbTintColor="#ffffff"
+        />
       </View>
     </ScrollView>
   );
@@ -189,5 +204,15 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  volumeLabel: {
+    fontSize: 16,
+    color: '#fff',
+    marginTop: 20,
+    marginBottom: 5,
+  },
+  slider: {
+    width: '100%',
+    height: 40,
   },
 });

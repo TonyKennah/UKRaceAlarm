@@ -1,10 +1,16 @@
-import { Tabs } from 'expo-router';
-
 import { faHome, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { StyleSheet } from 'react-native';
+import { Tabs } from 'expo-router';
+import { useEffect } from 'react';
+import { preloadSounds } from '../../services/audioManager';
 
 export default function TabLayout() {
+  useEffect(() => {
+    // Preload all sounds when the app layout mounts for the first time.
+    // This prevents UI jank when a sound is played.
+    void preloadSounds();
+  }, []);
+
   return (
     <Tabs
       screenOptions={{
@@ -32,17 +38,3 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-// You might need to add some styles if the FontAwesomeIcon doesn't render perfectly
-// within the tab bar without it, but usually it's fine.
-const styles = StyleSheet.create({
-  // Example if needed:
-  // icon: {
-  //   marginBottom: -3,
-  // },
-  // headerRight: {
-  //   marginRight: 15,
-  //   flexDirection: 'row',
-  //   gap: 10,
-  // },
-});
