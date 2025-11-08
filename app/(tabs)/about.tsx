@@ -58,10 +58,12 @@ export default function AboutScreen() {
         Set alarms for all races or toggle them individually to receive a two-minute warning before the race is off.
       </Text>
       <View style={styles.separator} />
-      <Text style={styles.credit}>Brought to you by TK courtesy of</Text>
-      <Text style={styles.pluckier} onPress={() => Linking.openURL('https://www.pluckier.co.uk')}>
-        Pluckier
-      </Text>
+      <View style={styles.creditLineContainer}>
+        <Text style={styles.credit}>Brought to you by TK courtesy of</Text>
+        <Text style={styles.pluckier} onPress={() => Linking.openURL('https://www.pluckier.co.uk')}>
+          Pluckier
+        </Text>
+      </View>
       </View>
       <View style={styles.melodyContainer}>
         <Text style={styles.melodyTitle}>Alarm Melody</Text>
@@ -78,23 +80,21 @@ export default function AboutScreen() {
         {isMobileWeb ? (
           <Text style={styles.volumeInfoText}>Use your device's volume buttons to adjust alarm sound.</Text>
         ) : (
-          <>
+          <View style={styles.volumeSliderContainer}>
             <Text style={styles.volumeLabel}>Volume</Text>
-            <View style={styles.volumeSliderContainer}>
-              <Slider
-                style={styles.slider}
-                minimumValue={0}
-                maximumValue={1}
-                value={volume}
-                onValueChange={setLocalVolume} // Updates UI and local state in real-time
-                onSlidingComplete={handleSlidingComplete} // Finalizes volume and plays preview
-                minimumTrackTintColor="#e02020ff"
-                maximumTrackTintColor="#ffffff"
-                thumbTintColor="#ffffff"
-              />
-              <Text style={styles.volumePercentageText}>{`${Math.round(volume * 100)}%`}</Text>
-            </View>
-          </>
+            <Slider
+              style={styles.slider}
+              minimumValue={0}
+              maximumValue={1}
+              value={volume}
+              onValueChange={setLocalVolume} // Updates UI and local state in real-time
+              onSlidingComplete={handleSlidingComplete} // Finalizes volume and plays preview
+              minimumTrackTintColor="#e02020ff"
+              maximumTrackTintColor="#ffffff"
+              thumbTintColor="#ffffff"
+            />
+            <Text style={styles.volumePercentageText}>{`${Math.round(volume * 100)}%`}</Text>
+          </View>
         )}
         <Pressable style={styles.testButton} onPress={handleTestMelody}>
           <Text style={styles.testButtonText}>Test Melody</Text>
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 40,
+    paddingVertical: 20,
     paddingHorizontal: 20,
   },
   mainContent: {
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
     backgroundColor: '#444',
-    marginVertical: 30,
+    marginVertical: 20,
   },
   description: {
     fontSize: 20,
@@ -158,26 +158,26 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#e02020ff',
-    marginTop: 5,
+    marginLeft: 5,
   },
   melodyContainer: {
     width: '100%',
     alignItems: 'center',
-    padding: 20,
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    padding: 15,
+    backgroundColor: 'rgba(0,0,0,0.2)',
     borderRadius: 10,
   },
   melodyTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
-    marginBottom: 15,
+    marginBottom: 10,
   },
   radioGroup: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '100%',
-    marginBottom: 20,
+    marginBottom: 15,
   },
   radioButton: {
     flexDirection: 'row',
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 30,
     borderRadius: 8,
-    marginTop: 20,
+    marginTop: 15,
   },
   testButtonText: {
     color: '#fff',
@@ -221,8 +221,7 @@ const styles = StyleSheet.create({
   volumeLabel: {
     fontSize: 16,
     color: '#fff',
-    alignSelf: 'flex-start',
-    marginBottom: 5,
+    marginRight: 10,
   },
   volumeSliderContainer: {
     flexDirection: 'row',
@@ -238,12 +237,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     minWidth: 45, // Ensures space for "100%"
     textAlign: 'right',
+    marginLeft: 10,
   },
   volumeInfoText: {
     fontSize: 16,
     color: '#fff',
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: 15,
     paddingHorizontal: 10,
+  },
+  creditLineContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10, // Add some margin to separate from the separator
   },
 });
