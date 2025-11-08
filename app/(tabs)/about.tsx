@@ -9,7 +9,7 @@ export default function AboutScreen() {
   // A simple check for mobile web. On mobile browsers, volume is controlled by the device hardware buttons.
   const isMobileWeb = Platform.OS === 'web' && (typeof window !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
 
-  const appVersion = "1.0.3";
+  const appVersion = "1.0.0";
   const currentDate = "05/11/2025";
   const [selectedMelody, setSelectedMelody] = useState<Melody>('Call');
   const [volume, setLocalVolume] = useState(1);
@@ -42,7 +42,7 @@ export default function AboutScreen() {
     // setAudioVolume saves the value and updates the sound objects
     await setAudioVolume(value);
     // Play a sound so the user can hear the new volume
-    await playSound(selectedMelody);
+    // await playSound(selectedMelody);
   };
 
   return (
@@ -82,6 +82,7 @@ export default function AboutScreen() {
         ) : (
           <View style={styles.volumeSliderContainer}>
             <Text style={styles.volumeLabel}>Volume</Text>
+            <Text style={styles.volumePercentageText}>{`${Math.round(volume * 100)}%`}</Text>
             <Slider
               style={styles.slider}
               minimumValue={0}
@@ -93,7 +94,6 @@ export default function AboutScreen() {
               maximumTrackTintColor="#ffffff"
               thumbTintColor="#ffffff"
             />
-            <Text style={styles.volumePercentageText}>{`${Math.round(volume * 100)}%`}</Text>
           </View>
         )}
         <Pressable style={styles.testButton} onPress={handleTestMelody}>
@@ -236,8 +236,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     minWidth: 45, // Ensures space for "100%"
-    textAlign: 'right',
-    marginLeft: 10,
+    textAlign: 'left',
+    marginRight: 10,
   },
   volumeInfoText: {
     fontSize: 16,
