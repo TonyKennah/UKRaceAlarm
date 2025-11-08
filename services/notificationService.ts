@@ -42,60 +42,32 @@ const getRaceId = (race: Race) => `${race.time}-${race.place}`;
 // Store timeout IDs for web so we can cancel them.
 let webTimeoutIds: NodeJS.Timeout[] = [];
 
+const playSoundFile = async (soundFile: any, fileName: string) => {
+  try {
+    const { sound } = await Audio.Sound.createAsync(soundFile);
+    await sound.playAsync();
+
+    // Add a listener to unload the sound from memory once it has finished playing.
+    sound.setOnPlaybackStatusUpdate(async (status) => {
+      if (status.isLoaded && status.didJustFinish) {
+        await sound.unloadAsync();
+      }
+    });
+  } catch (error) {
+    console.error(`Error playing ${fileName}:`, error);
+  }
+};
+
 export const playFirstCallMelody = () => {
-  // Using expo-av to play a local WAV file
-  // Assuming the file is located at assets/sounds/firstcall.wav
-  // If the path is different, please adjust require() accordingly.
-  const playSound = async () => {
-    try {
-      const { sound } = await Audio.Sound.createAsync(
-        require('../assets/sounds/firstcall.mp3')
-      );
-      await sound.playAsync();
-      // Optionally, you can unload the sound after it finishes playing to free up resources.
-      // For short, single-shot sounds, this might not be strictly necessary immediately.
-      // await sound.unloadAsync();
-    } catch (error) {
-      console.error('Error playing firstcall.mp3:', error);
-    }
-  };
-  void playSound(); // Call the async function
+  void playSoundFile(require('../assets/sounds/firstcall.mp3'), 'firstcall.mp3');
 };
 
 export const playXXXXMelody = () => {
-  // Using expo-av to play a local WAV file
-  // Assuming the file is located at assets/sounds/firstcall.wav
-  // If the path is different, please adjust require() accordingly.
-  const playSound = async () => {
-    try {
-      const { sound } = await Audio.Sound.createAsync(
-        require('../assets/sounds/rocking.mp3')
-      );
-      await sound.playAsync();
-      // Optionally, you can unload the sound after it finishes playing to free up resources.
-      // For short, single-shot sounds, this might not be strictly necessary immediately.
-      // await sound.unloadAsync();
-    } catch (error) {
-      console.error('Error playing rocking.mp3:', error);
-    }
-  };
-  void playSound(); // Call the async function
+  void playSoundFile(require('../assets/sounds/rocking.mp3'), 'rocking.mp3');
 };
 
 export const playYYYYMelody = () => {
-  // Using expo-av to play a local MP3 file
-  // Assuming the file is located at assets/sounds/piano.mp3
-  const playSound = async () => {
-    try {
-      const { sound } = await Audio.Sound.createAsync(
-        require('../assets/sounds/piano.mp3')
-      );
-      await sound.playAsync();
-    } catch (error) {
-      console.error('Error playing piano.mp3:', error);
-    }
-  };
-  void playSound(); // Call the async function
+  void playSoundFile(require('../assets/sounds/piano.mp3'), 'piano.mp3');
 };
 
 export async function scheduleRaceNotification(race: Race, raceTime: Date) {
@@ -125,7 +97,7 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
           break;
         default:
           playFirstCallMelody();
-      }
+    }
       AppEvents.emit('showAlert', {
         title: 'TWO MINUTE WARNING',
         message: `Race Time: ${race.time} at ${race.place}\n${race.details}`,
