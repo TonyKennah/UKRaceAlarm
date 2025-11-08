@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   pluckier: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#e02020ff',
+    color: '#ffffffff',
     marginLeft: 5,
   },
   melodyContainer: {
