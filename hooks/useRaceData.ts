@@ -18,7 +18,7 @@ export function useRaceData(currentTime: Date) {
   useEffect(() => {
     const fetchRaces = async () => {
       try {
-        const response = await fetch('https://www.pluckier.co.uk/race.json');
+        const response = await fetch('https://www.pluckier.co.uk/races.json');
         if (!response.ok) throw new Error('Network response was not ok');
         const remoteRaces = await response.json();
         setAllRaces(remoteRaces);

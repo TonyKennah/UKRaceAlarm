@@ -48,7 +48,7 @@ interface Race {
 const getRaceId = (race: Race) => `${race.time}-${race.place}`;
 
 // Store timeout IDs for web so we can cancel them.
-const webTimeoutIds = new Map<string, NodeJS.Timeout>();
+let webTimeoutIds: NodeJS.Timeout[] = [];
 
 export const playFirstCallMelody = () => {
   void playSound('Call');
@@ -75,7 +75,6 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
 
   // For web, use a recurring browser alert as a fallback for notifications.
   if (Platform.OS === 'web') {
-    const raceId = getRaceId(race);
     const timeoutId = setTimeout(async () => {
       const selectedMelody: Melody = await getSelectedMelody();
       void playSound(selectedMelody);
@@ -84,14 +83,12 @@ export async function scheduleRaceNotification(race: Race, raceTime: Date) {
         message: `Race Time: ${race.time} at ${race.place}\n${race.details}`,
         raceId: getRaceId(race),
       });
-      webTimeoutIds.delete(raceId); // Clean up after firing
     }, secondsUntilAMinuteBeforeRace * 1000);
-    webTimeoutIds.set(raceId, timeoutId);
+    webTimeoutIds.push(timeoutId);
     return;
   }
 
   await Notifications.scheduleNotificationAsync({
-    identifier: getRaceId(race), // Assign a unique ID to the notification
     content: {
       title: `Race Time: ${race.time} at ${race.place}`,
       body: `${race.details}\n${race.runners} runners.`,
@@ -122,8 +119,8 @@ export async function cancelRaceNotification(race: Race) {
 export async function cancelAllRaceNotifications() {
   // For web, clear all scheduled timeouts.
   if (Platform.OS === 'web') {
-    webTimeoutIds.forEach((timeoutId) => clearTimeout(timeoutId));
-    webTimeoutIds.clear();
+    webTimeoutIds.forEach(clearTimeout);
+    webTimeoutIds = [];
     return;
   }
 

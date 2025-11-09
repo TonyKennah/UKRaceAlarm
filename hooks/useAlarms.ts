@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { cancelAllRaceNotifications, scheduleRaceNotification } from '../services/notificationService';
+import { cancelAllRaceNotifications, cancelRaceNotification, scheduleRaceNotification } from '../services/notificationService';
 
 interface Race {
   time: string;
@@ -41,7 +41,7 @@ export function useAlarms(allRaces: Race[] | null) {
       clearTimeout(timeoutId);
       notificationTimeoutIds.current.delete(raceId);
     }
-    void cancelAllRaceNotifications();
+    void cancelRaceNotification(race);
   }, []);
 
   const handleToggleRaceAlarm = useCallback((race: Race) => {
@@ -55,19 +55,6 @@ export function useAlarms(allRaces: Race[] | null) {
       scheduleRaceAlarm(race);
     }
     setActiveAlarms(newActiveAlarms);
-
-    if (newActiveAlarms.has(raceId)) {
-      // If we just added one, no need to cancel all.
-    } else {
-      // If we removed one, we need to re-schedule the others.
-      newActiveAlarms.forEach(id => {
-        const [time, place] = id.split('-');
-        const raceToReschedule = allRaces?.find(r => r.time === time && r.place === place);
-        if (raceToReschedule) {
-          scheduleRaceAlarm(raceToReschedule);
-        }
-      });
-    }
   }, [activeAlarms, allRaces, cancelRaceAlarm, scheduleRaceAlarm]);
 
   const handleToggleAlarms = useCallback(() => {
@@ -94,4 +81,3 @@ export function useAlarms(allRaces: Race[] | null) {
 
   return { activeAlarms, warningAlarms, handleToggleAlarms, handleToggleRaceAlarm };
 }
-
