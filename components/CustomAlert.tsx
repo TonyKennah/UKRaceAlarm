@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Modal, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
-import { AppEvents } from '../services/eventService';
+import { AppEvent, AppEvents } from '../services/eventService';
 
 interface AlertData {
   title: string;
@@ -13,23 +13,38 @@ export default function CustomAlert() {
   const [alertData, setAlertData] = useState<AlertData | null>(null);
   const scrollYRef = useRef(0);
 
+  // This effect handles the body scrolling lock on web
   useEffect(() => {
     if (Platform.OS !== 'web') return;
 
-    const handleShowAlert = (data: AlertData) => {
-      // Save current scroll position and lock the body
+    if (visible) {
+      // When the modal becomes visible, save the scroll position and lock the body
       scrollYRef.current = window.scrollY;
       const body = document.body;
       body.style.position = 'fixed';
       body.style.top = `-${scrollYRef.current}px`;
       body.style.width = '100%';
+    }
 
+    // Return a cleanup function
+    return () => {
+      // This runs whenever the modal becomes hidden (or the component unmounts)
+      const body = document.body;
+      body.style.position = '';
+      body.style.top = '';
+      body.style.width = '';
+      window.scrollTo(0, scrollYRef.current);
+    };
+  }, [visible]); // This effect depends only on the `visible` state
+
+  // This effect subscribes to global app events
+  useEffect(() => {
+    const handleShowAlert = (data: AlertData) => {
       setAlertData(data);
       setVisible(true);
     };
 
-    const handleCloseAlert = (data: { raceId: string }) => {
-      // Use a functional update to get the latest alertData state
+    const handleCloseAlert = (data: { raceId: string }): void => {
       setAlertData(currentAlertData => {
         if (currentAlertData?.raceId === data.raceId) {
           setVisible(false);
@@ -39,25 +54,15 @@ export default function CustomAlert() {
       });
     };
 
-    const unsubscribeShow = AppEvents.on('showAlert', handleShowAlert);
-    const unsubscribeClose = AppEvents.on('closeAlert', handleCloseAlert);
+    const unsubscribeShow = AppEvents.on('showAlert', handleShowAlert as AppEvent);
+    const unsubscribeClose = AppEvents.on('closeAlert', handleCloseAlert as AppEvent);
     return () => {
       unsubscribeShow();
       unsubscribeClose();
     };
   }, []);
 
-  const handleDismiss = () => {
-    setVisible(false);
-    if (Platform.OS === 'web') {
-      // Restore body styles and scroll position
-      const body = document.body;
-      body.style.position = '';
-      body.style.top = '';
-      body.style.width = '';
-      window.scrollTo(0, scrollYRef.current);
-    }
-  };
+  const handleDismiss = () => setVisible(false);
 
   if (!visible || !alertData) {
     return null;

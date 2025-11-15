@@ -104,6 +104,9 @@ export default function Index() {
           data={displayedRaces}
           renderItem={renderRaceItem}
           keyExtractor={(item) => `${item.time}-${item.place}`}
+          maintainVisibleContentPosition={{
+            minIndexForVisible: 0,
+          }}
           style={styles.list}
         />
       ) : (
