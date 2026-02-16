@@ -30,7 +30,7 @@ export default function RaceItem({ item, status, countdown, isFinished, isAlarmA
           <Text style={styles.raceTime}>{item.time} </Text>
           <Text style={styles.racePlace}>{item.place} </Text>
           <Text style={styles.raceDetails}>
-            {item.details} ({item.runners} runners)
+            {item.details}
           </Text>
         </Text>
       </View>
